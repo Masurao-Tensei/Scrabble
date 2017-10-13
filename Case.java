@@ -115,13 +115,13 @@ public class Case extends JPanel {
 		g2d.setPaint(gp61);
 		g2d.fillRect(191, 317, 44, 44); //x, y, xplus, yplus
 		GradientPaint gp62 = new  GradientPaint(101,47, Color.CYAN, 0, 0, Color.CYAN, true);
-		g2d.setPaint(gp52);
+		g2d.setPaint(gp62);
 		g2d.fillRect(371, 317, 44, 44);
 		GradientPaint gp63 = new  GradientPaint(0,0, Color.CYAN, 101, 10, Color.CYAN, true);
 		g2d.setPaint(gp63);
 		g2d.fillRect(461, 317, 44, 44);
 		GradientPaint gp64 = new  GradientPaint(101,47, Color.CYAN, 0, 0, Color.CYAN, true);
-		g2d.setPaint(gp54);
+		g2d.setPaint(gp64);
 		g2d.fillRect(641, 317, 44, 44);
 		
 		///// 8e rang /////
@@ -131,8 +131,8 @@ public class Case extends JPanel {
 		
 		g2d.setPaint(gp2);
 		g2d.fillRect(236, 362, 44, 44);
-		GradientPaint gpX = new  GradientPaint(0,0, Color.ORANGE, 101, 10, Color.ORANGE, true);
-		g2d.setPaint(gpX);
+		
+		g2d.setPaint(gp21);
 		g2d.fillRect(416, 362, 44, 44);
 		
 		g2d.setPaint(gp4);
