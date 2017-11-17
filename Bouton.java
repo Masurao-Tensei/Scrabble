@@ -19,8 +19,8 @@ public class Bouton extends JButton {
 	    GradientPaint fd = new GradientPaint(175, 95, Color.GREEN, 335, 300, Color.black, true);
 	    fond.setPaint(fd);
 	    fond.fillRect(0, 0, this.getWidth(), this.getHeight());
-	    fond.setColor(Color.black);
-	    fond.drawString(this.nom, this.getWidth() / 2, (this.getHeight() / 2) + 5);
+	    fond.setColor(Color.white);
+	    fond.drawString(this.nom, this.getWidth() / 2, (this.getHeight() / 2) +5);
 	  }  
 	
 }

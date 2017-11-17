@@ -6,11 +6,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.List;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
 
 public class Case extends JPanel {
 
+	
 	public void paintComponent(Graphics g){
 		
 		Graphics2D g2d = (Graphics2D)g;
@@ -336,26 +336,6 @@ public class Case extends JPanel {
 		
 		g.drawString("L  x3", 336, 658);
 		g.drawString("L  x3", 516, 658);
-		
-		
-		/*//15 premières cases
-	    g.drawRect(10, 10, 50, 50);
-	    g.drawRect(60, 10, 50, 50);
-	    g.drawRect(110, 10, 50, 50);
-	    g.drawRect(160, 10, 50, 50);
-	    g.drawRect(210, 10, 50, 50);
-	    g.drawRect(260, 10, 50, 50);
-	    g.drawRect(310, 10, 50, 50);
-	    g.drawRect(360, 10, 50, 50);
-	    g.drawRect(410, 10, 50, 50);
-	    g.drawRect(460, 10, 50, 50);
-	    g.drawRect(510, 10, 50, 50);
-	    g.drawRect(560, 10, 50, 50);
-	    g.drawRect(610, 10, 50, 50);
-	    g.drawRect(660, 10, 50, 50);
-	    g.drawRect(710, 10, 50, 50);
-	    */
-
 	   
 	  } 
 }
