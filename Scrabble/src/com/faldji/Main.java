@@ -1,3 +1,4 @@
+package com.faldji;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,11 +25,12 @@ public class Main {
 		Menu menu=new Menu(J1,s1);
 		
 		Dictionnaire d=new Dictionnaire();
-		Plateau1 plateau = new Plateau1();
 		
 		int choixaction;
 		
 		s1.remplirsac();
+
+		Plateau2 plateau = new Plateau2(s1);
 		//s1.contenudusac(); //C'était juste pour vérifier que le sac soit remplit correctement
 		J1.main.creationmain();
 		J1.main.affichermain();

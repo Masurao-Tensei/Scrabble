@@ -1,3 +1,4 @@
+package com.faldji;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,19 +11,19 @@ public class Dictionnaire {
 	 System.out.println("Chargement du dictionnaire en cours...");
 	   Dictionnaire dico = new Dictionnaire();
 	   System.out.println();
-	   System.out.println("[EffectuÃ©]  Chargement du dictionnaire terminÃ©");
+	   System.out.println("[Effectué]  Chargement du dictionnaire terminé");
 	   System.out.println();
-	   System.out.println("Tester la Fonction verifie ? 'O' ou 'N'");
+	   /*System.out.println("Tester la Fonction verifie ? 'O' ou 'N'");
 	   Scanner scv1 = new Scanner(System.in);
 	   String OuiNonv1 =  scv1.nextLine();
 	   Scanner scMot1 = new Scanner(System.in);
 	   while(OuiNonv1.charAt(0) == 'O'|| OuiNonv1.charAt(0) == 'o') {
-		   System.out.println("Entrer un Mot Ã  verifier");
+		   System.out.println("Entrer un Mot à  verifier");
 		   
 	   // Test de mot avec la methode verifie des lettres ci-dessus 
 	   System.out.println(dico.verifie1(scMot1.nextLine()));
 	   System.out.println("Retester la Fonction verifie1 ? 'O' ou 'N'");
-	   OuiNonv1 =  scv1.nextLine();}
+	   OuiNonv1 =  scv1.nextLine();}*/
 	   
  }
  public Dictionnaire() {   

@@ -1,3 +1,4 @@
+package com.faldji;
 
 
 import java.awt.Color;
@@ -246,7 +247,7 @@ public class Case extends JPanel {
 		////////////// COULEUR
 		g.setColor(Color.black);
 		
-		//légende
+		//lÃ©gende
 		g.drawString("L pour lettre", 101, 33);
 		
 		////// case rouge //////
@@ -338,7 +339,7 @@ public class Case extends JPanel {
 		g.drawString("L  x3", 516, 658);
 		
 		
-		/*//15 premières cases
+		/*//15 premiï¿½res cases
 	    g.drawRect(10, 10, 50, 50);
 	    g.drawRect(60, 10, 50, 50);
 	    g.drawRect(110, 10, 50, 50);

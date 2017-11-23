@@ -1,3 +1,4 @@
+package com.faldji;
 
 
 import java.awt.Color;
@@ -8,17 +9,17 @@ import javax.swing.JPanel;
 public class Plateau1 extends JFrame {
 	
 	public Plateau1(){
-		//définit un titre
+		//dÃ©finit un titre
 		this.setTitle("Plateau de scrabble");
-		//rend visible la fenêtre
+		//rend visible la fenÃªtre
 		this.setVisible(true);
-		//définit la taille
+		//dÃ©finit la taille
 		this.setSize(1000, 1000);
 		//positionne au centre
 		this.setLocationRelativeTo(null);
-		//ferme la fenêtre avec la croix
+		//ferme la fenÃªtre avec la croix
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//ajoute les carrés de la classe case
+		//ajoute les carrÃ©s de la classe case
 		this.setContentPane(new Case());
 		
 		

@@ -1,3 +1,4 @@
+package com.faldji;
 
 public class Joueur {
 	

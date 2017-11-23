@@ -1,3 +1,4 @@
+package com.faldji;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -86,7 +87,7 @@ public class MainJoueur {
 		
 		public void affichermain(){
 			
-			//Pour afficher le contenu de la main de départ
+			//Pour afficher le contenu de la main de dÃ©part
 			System.out.println("Contenu de votre main : ");
 			
 			for (Lettre li : contenumain){

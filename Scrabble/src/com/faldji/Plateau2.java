@@ -1,90 +1,89 @@
+package com.faldji;
+import java.util.*;
 
-/*import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;*/
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
-/*import javax.swing.JPanel;
-import javax.swing.table.TableColumn;*/
-
-public class Plateau2 extends JFrame {
+public class Plateau2 {
 	
-	 /* private JTable tableau;
-	  private JButton change = new JButton("Changer la taille");
-	  private JButton retablir = new JButton("Rétablir");*/
-	
-	public Plateau2(){
-		this.setTitle("Plateau de scrabble");
-		this.setSize(1400, 600);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-	Object[][] data = {
-	      {"bla  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", " " },
-	      {" bla  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", " " },
-	      {" bla ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", " " },
-	      {" bla ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", " " },
-	      {"  bla", "  ", "  ", "  ", "  ", "  ", "  ", "  ", " " },
-	      
-	    };
-	
-	
-	    String  title[] = {" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 "};
-	    JTable tableau = new JTable(data, title);
-	    
-	   /* JPanel pan = new JPanel();
+	 private CaseAbdoulaye[][] CaseAbdoulaye = new CaseAbdoulaye[15][15];
+	  // CaseAbdoulaye[x][y] is CaseAbdoulaye at this coordinate
+	  private List TousLesCases = new ArrayList(); 
 
-	    change.addActionListener(new ActionListener(){
-	      public void actionPerformed(ActionEvent arg0) {            
-	        changeSize(200, 80);
-	        change.setEnabled(false);
-	        retablir.setEnabled(true);
-	      }         
-	    });
-
-	    retablir.addActionListener(new ActionListener(){
-	      public void actionPerformed(ActionEvent arg0) {
-
-	        changeSize(75, 16);
-	        change.setEnabled(true);
-	        retablir.setEnabled(false);
-	      }         
-	    });
-
-	    retablir.setEnabled(false);
-	    pan.add(change);
-	    pan.add(retablir);
-
-	    this.getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
-	    this.getContentPane().add(pan, BorderLayout.SOUTH);
+	  public Plateau2(Sac b)
+	  { // uses b to do layout -- mostly standard
+	    CaseAbdoulaye = b.getPlateau2();
+	    for (int i = 0; i < 15; i++)
+	    { for (int j = 0; j < 15; j++)
+	      { TousLesCases.add(CaseAbdoulaye[i][j]); }
+	    }
 	  }
-	   
-	  
-	  public void changeSize(int width, int height){
-	    //Nous créons un objet TableColumn afin de travailler sur notre colonne
-	    TableColumn col;
-	    for(int i = 0; i < tableau.getColumnCount(); i++){
-	      if(i == 1){
-	        //On récupère le modèle de la colonne
-	        col = tableau.getColumnModel().getColumn(i);
-	        //On lui affecte la nouvelle valeur
-	        col.setPreferredWidth(width);
-	      }
-	    }            
-	    for(int i = 0; i < tableau.getRowCount(); i++){
-	      //On affecte la taille de la ligne à l'indice spécifié !
-	      if(i == 1)
-	        tableau.setRowHeight(i, height);
-	      }
-	    }*/
-	    
-	    this.getContentPane().add(new JScrollPane(tableau));   
-	}     
-}
 
+	  public Plateau2(CaseAbdoulaye[][] arr) 
+	  { CaseAbdoulaye = arr;
+	    for (int i = 0; i < 15; i++)
+	    { for (int j = 0; j < 15; j++)
+	      { TousLesCases.add(CaseAbdoulaye[i][j]); }
+	    }
+	  } 
+
+	  public Object clone()
+	  { CaseAbdoulaye[][] newCaseAbdoulaye = new CaseAbdoulaye[15][15]; 
+	    for (int i = 0; i < 15; i++) 
+	    { for (int j = 0; j < 15; j++) 
+	      { CaseAbdoulaye ca = (CaseAbdoulaye) CaseAbdoulaye[i][j].clone(); 
+	        newCaseAbdoulaye[i][j] = ca; 
+	      } 
+	    } 
+	    return new Plateau2(newCaseAbdoulaye); 
+	  } 
+
+	  public CaseAbdoulaye getCaseAbdoulaye(int i, int j)
+	  { return CaseAbdoulaye[i][j]; }
+
+	  public ArrayList getLigne(int y)
+	  { ArrayList res = new ArrayList(); 
+	    for (int i = 0; i < 15; i++) 
+	    { res.add(CaseAbdoulaye[i][y]); } 
+	    return res; 
+	  } 
+
+	  public List getCaseAbdoulaye()
+	  { return TousLesCases; }
+
+	  public boolean estOcupee(int i, int j)
+	  { return CaseAbdoulaye[i][j].estOcupee(); }
+	 
+	  public boolean AdjacentOcupee(int x, int y)
+	  { int x0 = x;
+	    int y0 = y;
+	    int x1 = x;
+	    int y1 = y;
+	    if (x > 0)
+	    { x0 = x-1; }
+	    if (x < 14)
+	    { x1 = x+1; }
+	    if (y > 0)
+	    { y0 = y-1; }
+	    if (y < 14)
+	    { y1 = y+1; }
+	    return CaseAbdoulaye[x][y].estOcupee() ||
+	           CaseAbdoulaye[x0][y].estOcupee() ||
+	           CaseAbdoulaye[x1][y].estOcupee() ||
+	           CaseAbdoulaye[x][y0].estOcupee() ||
+	           CaseAbdoulaye[x][y1].estOcupee();
+	  }
+
+	  
+
+	  public void placeLettre(Lettre l, int x, int y)
+	  { CaseAbdoulaye[x][y].setlettre(l); }
+
+	  public String toString()
+	  { String res = "";
+	    for (int j = 0; j < 15; j++)
+	    { for (int i = 0; i < 15; i++)
+	      { res = res + CaseAbdoulaye[i][j]; }
+	      res = res + "\n";
+	    }
+	    return res;
+	  }
+	}
 
