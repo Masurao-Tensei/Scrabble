@@ -7,8 +7,6 @@ public class Menu {
 	protected int choixaction;
 	protected int possibilitechoix;
 	protected Joueur joueur;
-	protected Sac sac;
-	protected Plateau2 tab;
 	
 	public int getChoixaction() {
 		return choixaction;
@@ -23,18 +21,12 @@ public class Menu {
 		this.possibilitechoix = possibilitechoix;
 	}
 	
-	public Menu(Sac sc) {
-		tab = new Plateau2(sc); 
-		sac = sc;
-	}
 	
 	public Menu(Joueur joueur, Sac sac/*int choixaction, int possibilitechoix*/) {
 		super();
 		this.choixaction = choixaction;
 		this.possibilitechoix = possibilitechoix;
 	}
-	public CaseAbdoulaye getCaseAbdoulaye(int i, int j)
-	{ return tab.getCaseAbdoulaye(i,j); }
 	
 	public void affichermenu(){
 		

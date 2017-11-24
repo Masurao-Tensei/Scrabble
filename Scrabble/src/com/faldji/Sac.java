@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.Random;
 
 
+
 public class Sac {
 	private static List caseSpecial = new ArrayList(); 
 	  protected List alphabet = new ArrayList(); // of String
-	  protected List Lettres = new ArrayList();  // of Lettre
 	  protected Map LettreMap = new HashMap(); 
 	protected boolean vide; //Je l'ai mis car permettra peut etre par le suite de l'utiliser pour l'arrète du jeu, si le sac est vide le jeu est fini
 	protected ArrayList<Lettre> contenusac; //Arraylist contenant les lettres dispo dans le sac
@@ -37,13 +37,16 @@ public class Sac {
 	
 	
 
-	public Sac(boolean vide, ArrayList<Lettre> contenusac) {
+	public Sac(boolean vide, ArrayList<Lettre> _contenusac) {
 		super();
 		this.vide = vide;
-		this.contenusac = new ArrayList();
+		this.contenusac = _contenusac;
 		
 	}
-	
+	public Lettre getLettre(char c)
+	  { String car = "" + c; 
+	    return (Lettre) LettreMap.get(car); 
+	  } 
 
 	  public static CaseAbdoulaye[][] getPlateau2()
 	  { CaseAbdoulaye[][] res = new CaseAbdoulaye[15][15];
@@ -135,6 +138,7 @@ public class Sac {
 	  public static List getcaseSpecial()
 	  { return (List) ((ArrayList) caseSpecial).clone(); } 
 
+	  
 //Permet de remplir le sac avec le bon nombre de lettre
 	public void remplirsac(){
 		
@@ -173,7 +177,7 @@ public class Sac {
 		
 		//on rempli le sac avec les diff�rentes lettres
 		for(i=0;i<A.nombre;i++){
-			contenusac.add(A);			
+			contenusac.add(A);
 			}
 		
 		for(i=0;i<B.nombre;i++){			
@@ -294,7 +298,7 @@ public class Sac {
 	
 	//Fonction TireLettres() retire au hasard des lettres du sac 
 	//peut servir pour remplire la main du Joueur en cours.
-	public Lettre TireLettres() {
+	public Lettre TireLettres(int nb) {
         int max = contenusac.size() - 1;
         Random hasard = new Random();
         int Lettretiree = hasard.nextInt(max + 1);
@@ -314,6 +318,19 @@ public class Sac {
 		}
 		
 	}
+	public List tireLettres(int nb)
+	  { List liste = new ArrayList();
+	    Random rand = new Random();
+	    int n = contenusac.size();
+	    for (int i = 0; i < nb; i++)
+	    { int ind = rand.nextInt(n);
+	      Lettre l = (Lettre) contenusac.get(ind);
+	      liste.add(l);  // sort in decreasing score order
+	      contenusac.remove(ind);
+	      n--;
+	    }
+	    return liste;
+	  }
 	public List getAlphabet()
 	  { return alphabet; } 
 
