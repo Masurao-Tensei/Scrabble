@@ -1,20 +1,11 @@
 package projet;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.*;
 
@@ -40,10 +31,6 @@ public class Menu extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//// BoxLayout /////
-		
-		/*JLabel label5=new JLabel();
-		label5.setIcon(new ImageIcon("C:/Users/nicob/Desktop/Test/Projet/scrabble.png"));
-		b1.setLayout(new FlowLayout());*/
 		
 		bouton.setMaximumSize(new Dimension(4000, 400));
 		bouton.setMinimumSize(new Dimension(4000, 200));
