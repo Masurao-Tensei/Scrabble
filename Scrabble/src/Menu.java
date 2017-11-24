@@ -1,7 +1,9 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Menu {
-
+	Scanner sc= new Scanner(System.in);
 	protected int choixaction;
 	protected int possibilitechoix;
 	protected Joueur joueur;
@@ -10,12 +12,15 @@ public class Menu {
 	public int getChoixaction() {
 		return choixaction;
 	}
+	
 	public void setChoixaction(int choixaction) {
 		this.choixaction = choixaction;
 	}
+	
 	public int getPossibilitechoix() {
 		return possibilitechoix;
 	}
+	
 	public void setPossibilitechoix(int possibilitechoix) {
 		this.possibilitechoix = possibilitechoix;
 	}
@@ -28,19 +33,19 @@ public class Menu {
 		this.possibilitechoix = possibilitechoix;
 	}
 	
+	
 	/**
 	 * Affichage du menu
 	 */
-	public void affichermenu(){
+	
+	public void affichermenu(){		
 		
-		
-			System.out.println("\nChoisissez une action : \n "
-					+ "1 : Poser un mot, \n "
-			 		+ "2 : Changer des lettres, \n"
-			 		+ "0 : Fin de tour. \n");
+		System.out.println("\nChoisissez une action : \n "
+				+ "1 : Poser un mot, \n "
+			 	+ "2 : Changer des lettres, \n"
+			 	+ "0 : Fin de tour. \n");
 			
 		}
-	
 	
 	/**
 	 * Choix des différentes actions possibles en jeu
@@ -51,19 +56,22 @@ public class Menu {
 		
 		switch(choixaction)
 	    {
-        case 1 :
-        	placermot(joueur, sac, plateau, tab);
-        break;
-        
-        case 2:
-        	
-        	changerlettres(joueur,sac);
-        break;
-        default:
-            System.out.println("Fin de tour."); 
-        break;
-	    }
-		
+	        case 1 :
+	        	placermot(joueur, sac, plateau, plateau.tab);
+	        break;
+	        
+	        case 2:	        	
+	        	changerlettres(joueur,sac);
+	        break;
+	        
+	        /*case 3:	        	
+	        	annulerderniercoup();
+	        break;*/
+	        
+	        default:
+	            System.out.println("Fin de tour."); 
+	        break;
+	    }		
 	}
 	
 	/**
@@ -75,66 +83,42 @@ public class Menu {
 		
 		int lettre, ligne, colonne;
 		int hv;
-		System.out.println("===Choix====\n 1_ Mot horizontale\n 2_ Mot Verticale"); //choix de si le mot sera à la verticale ou horizontal
+		System.out.println("===Choix====\n 1_ Mot horizontal\n 2_ Mot Vertical"); //choix de si le mot sera à la verticale ou horizontal
 		hv = sc.nextInt();
-		sc.nextLine();
-		
-		
+		sc.nextLine();		
 		
 		switch (hv) {
-		case 1:  //gestion des mots à l'horizontal
-		{
-			int choix; String mot;
+			case 1:  //gestion des mots à l'horizontal
+			{			
+				int choix; String mot;
+								
+				if (plateau.vide(plateau.tab) == true) //si le plateau est complétement vide
+				{
+					ifplateauvidehorizontal(joueur, sac, plateau, plateau.tab);
+				} 				
+				else 
+				{ //si le plateau n'est pas vide au départ				
+					elseplateauvidehorizontal(joueur, sac, plateau, plateau.tab);						
+				} 			
 			
+			break;			
+			}//end case1			
+			
+			case 2: //gestion des mots à la vertical
+			{
+				int choix; String mot;				
 				
-				
+				if (plateau.vide(plateau.tab) == true) //si le plateau est complétement vide
+				{	
+					ifplateauvidevertical(joueur, sac, plateau, plateau.tab);
+				} 				
+				else 
+				{ //si le plateau n'est pas vide au départ				
+					elseplateauvidevertical(joueur, sac, plateau, plateau.tab);						
+				} 			
 			
-			if (plateau.vide(tab) == true) //si le plateau est complétement vide
-			{	
-				ifplateauvidehorizontal(joueur, sac, plateau, tab);
-			} 
-			
-			else 
-			{ //si le plateau n'est pas vide au départ				
-				elseplateauvidehorizontal(joueur, sac, plateau, tab);						
-			} 
-		
-			
-			
-		//} //fin if=1
-		
-		
-		break;
-		
-		
-		}//end case1
-		
-		
-		case 2: //gestion des mots à la vertical
-		{
-			int choix; String mot;
-			
-			
-			if (plateau.vide(tab) == true) //si le plateau est complétement vide
-			{	
-				ifplateauvidevertical(joueur, sac, plateau, tab);
-			} 
-			
-			else 
-			{ //si le plateau n'est pas vide au départ				
-				elseplateauvidevertical(joueur, sac, plateau, tab);						
-			} 
-		
-			
-		
-		break;
-		
-		
-		}//end case2
-		
-		
-		
-		
+			break;			
+			}//end case2		
 		}//fin du switch
 		
 	}//fin méthode
@@ -148,31 +132,48 @@ public class Menu {
 	public void ifplateauvidehorizontal(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][]){
 		
 		
-		int lettre, ligne, colonne; String mot;
-		System.out.println("Choisissez la lettre à placer (indiquer son numero) : ");
-		    
-		lettre=sc.nextInt();  //choix de la lettre
-		System.out.println("Premiere Lettre du jeu");
-		tab[7][7] = joueur.main.contenumain.get(lettre-1).nom; //placement de la lettre au centre
+		int lettre, ligne, colonne; String mot=null;
+		int i=0;
+		Dictionnaire dico=new Dictionnaire();
+		VerifMot verif=new VerifMot();
 		
-										
-		plateau.plateauconsole(tab); //affichage tableau après le coup
 		
-		joueur.main.contenumain.remove(lettre-1); //MAJ de la main
+	  	System.out.println("Choisissez la lettre à placer (indiquer son numero/1e lettre du mot) : ");	    
+		lettre=sc.nextInt();  //choix de la lettre à placer
 		
-						
-		joueur.main.affichermain(); //afichage de la nouvelle main ainsi obtenue
 		
-		// mot=tab[7][7];  //MAJ du mot en cours (pour verif apres)
+		System.out.println("Choisissez la case où le placer (colonne)");						
+		colonne=sc.nextInt();  //choix de la colonne (uniquement colonne car mot horizontal)
 		
-		int n1 = 1, choix2=0;
+		if (plateau.tab[7][colonne - 1].equalsIgnoreCase(" ")) { //si la case est vide
+		
+			plateau.tab[7][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
+    	 
+    	 
+	    	 if(mot==null){
+	    		 mot=(plateau.tab[7][colonne-1]);//MAJ du mot
+	    	 }
+	    	 else mot+=(plateau.tab[7][colonne-1]); //MAJ du mot
+	    	 
+	    	 				 		
+	 		plateau.plateauconsole(plateau.tab); //aff tableau
+	 		
+	 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
+	 		
+	 		joueur.main.affichermain();  //aff main apres coup
+    	 
+		}//fin if case vide
+		
+		
+		int n1 = 1, choix2=0, cpt=1;
+		
 		
 		while (n1<7) //sept lettre dans la main
 		{
-		  System.out.println("===Choix====\n 1_ placer une letrre\n 0_ fin");
+		  System.out.println("===Choix====\n 1_ placer une letrre\n 2_ retirer la derniere lettre placee\n 0_ fin");
 		  choix2 = sc.nextInt();  //nouveau choix de placer ou non
 		  
-
+		  
 		  switch (choix2) {
 		     case 1: {  //si on veut placer une lettre
 		     	
@@ -180,37 +181,62 @@ public class Menu {
 				lettre=sc.nextInt();  //choix de la lettre à placer
 				
 				
-				System.out.println("Choisissez la case où le placer (colonne)");						
-				colonne=sc.nextInt();  //choix de la colonne (uniquement colonne car mot horizontal)
 				
-				if (tab[7][colonne - 1].equalsIgnoreCase(" ")) { //si la case est vide
 				
-		    	 tab[7][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
-		    	 //mot=tab[7][colonne-1]; //MAJ du mot
-		    	 
-		    	 				 		
-		 		plateau.plateauconsole(tab); //aff tableau
-		 		
-		 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
-		 		
-		 		joueur.main.affichermain();  //aff main apres coup
-		    	 //j++;
-		    	 n1++; 		    	 //compteur : pas plus de 7 lettres par tour
-				}
+				if (plateau.tab[7][(colonne - 1)+cpt].equalsIgnoreCase(" ")) { //si la case est vide
+				
+					plateau.tab[7][(colonne-1)+cpt]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
+			    	 
+			    	 
+			    	mot+=(plateau.tab[7][(colonne-1)+cpt]); //MAJ du mot
+			    	 
+			    	 				 		
+			 		plateau.plateauconsole(plateau.tab); //aff tableau
+			 		
+			 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
+			 		
+			 		joueur.main.affichermain();  //aff main apres coup
+			    	 
+			    	n1++; 		    	 //compteur : pas plus de 7 lettres par tour
+			    	cpt++;//compteur decalage pour case suivante
+			    	
+				}//fin if case vide
 				else{
 					System.out.println("Il y deja une lettre dans cette case");
 				}
+				
+				
 		    	 break;
 		     }//fin case 1
+		     
+		     case 2:
+		    	 plateau.tab[7][(colonne-1)+cpt-1]=" ";
+		    	 plateau.plateauconsole(plateau.tab);
+		    	 break;
 		     case 0: { // si on ne veut plus placer de lettre ce tour ci
 			     n1=7;
 			     System.out.println("fin");
 			     
 			     break;
 		     }//fin case 0
+		     
 		  } //fin switch
+		  
 		}// fin while
 		
+		System.out.println("le mot est : ");
+		
+		System.out.println(mot);  //Affichage du mot obtenu
+		
+		if(plateau.tab[7][7].equalsIgnoreCase(" ")){			
+			annulerderniercouphorizontal(plateau, tab, 7, colonne, cpt);			
+		}
+		
+		if (verif.dico(mot).equalsIgnoreCase("Mot correcte")) { plateau.plateauconsole(plateau.tab);}  //Vérification avec le dico
+		else {
+			annulerderniercouphorizontal(plateau, tab, 7, colonne, cpt);
+			System.out.println( verif.dico(mot));
+			}
 		
 	}//fin méthode
 	
@@ -223,97 +249,105 @@ public class Menu {
 	
 	public void elseplateauvidehorizontal(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][]){
 		
-		int nbl = 0,choix2 = 0; int lettre,ligne,colonne;
-		String mot;
+		int lettre, ligne, colonne; String mot=null;
+		int i=0;
+		Dictionnaire dico=new Dictionnaire();
+		VerifMot verif=new VerifMot();
 		
 		
-		  System.out.println("===Choix====\n 1_ placer une letrre\n 0_ fin");
+	  	System.out.println("Choisissez la lettre à placer (indiquer son numero/1e lettre du mot) : ");	    
+		lettre=sc.nextInt();  //choix de la lettre à placer
+		
+		
+		System.out.println("Choisissez la case où le placer (ligne/colonne)");						
+		ligne=sc.nextInt();  //choix de la ligne
+		colonne=sc.nextInt();  //choix de la colonne (uniquement colonne car mot horizontal)
+		
+		if (plateau.tab[ligne-1][colonne - 1].equalsIgnoreCase(" ")) { //si la case est vide
+		
+			plateau.tab[ligne-1][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
+	    	 
+	    	 
+	    	 if(mot==null){
+	    		 mot=(plateau.tab[ligne-1][colonne-1]);//MAJ du mot
+	    	 }
+	    	 else mot+=(plateau.tab[ligne-1][colonne-1]); //MAJ du mot
+	    	 
+	    	 				 		
+	 		plateau.plateauconsole(plateau.tab); //aff tableau
+	 		
+	 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
+	 		
+	 		joueur.main.affichermain();  //aff main apres coup
+    	 
+		}// fin if case vide
+		
+		
+		int n1 = 1, choix2=0, cpt=1;
+		
+		
+		while (n1<7) //sept lettre dans la main
+		{
+		  System.out.println("===Choix====\n 1_ placer une letrre\n 2_ retirer la derniere lettre placee\n 0_ fin");
 		  choix2 = sc.nextInt();  //nouveau choix de placer ou non
 		  
-		  if(choix2==1){ //si on veut placer une lettre
-			  
-			  /**
-			   * ici on gere la 1e lettre du mot à placer, on a le choix de la ligne et de la colonne
-			   */
-			  System.out.println("Choisissez la lettre à placer (indiquer son numero) : ");	    
-			  lettre=sc.nextInt();  //choix de la lettre à placer
-				
-				
-				System.out.println("Choisissez la case où le placer (ligne, colonne)");		///choix de la ligne et colonne				
-				ligne=sc.nextInt();
-				colonne=sc.nextInt();
-				if (tab[ligne-1][colonne-1].equalsIgnoreCase(" ")) {
-				tab[ligne-1][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  
-		    	  //mot=tab[ligne-1][colonne-1]; //MAJ du mot
-		    	 
-		    	 				 		
-		 		plateau.plateauconsole(tab); //aff tableau
-		 		
-		 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
-		 		
-		 		joueur.main.affichermain();  //aff main apres coup
-		    	 
-		    	 nbl++;
-				}
-				else{
-					System.out.println("Il y deja une lettre dans cette case");
-				}
-		    	 
-		    	 /**
-				   * à partir de la, on ne choisit plus que la colonne, car le mot est horizontal, la ligne est fixée
-				   */
 		  
-		    	 while (nbl<7){//sept lettre dans la main
-		  System.out.println("===Choix====\n 1_ placer une letrre\n 0_ fin");
-		  int choix3 = sc.nextInt();  //nouveau choix de placer ou non
-		  
-			
-		  switch (choix3) {
-		     case 1: {
+		  switch (choix2) {
+		     case 1: {  //si on veut placer une lettre
 		     	
 		     	System.out.println("Choisissez la lettre à placer (indiquer son numero) : ");	    
 				lettre=sc.nextInt();  //choix de la lettre à placer
 				
 				
-				System.out.println("Choisissez la case où le placer (colonne)");						
-				colonne=sc.nextInt();  //choix de la colonne (uniquement colonne car mot horizontal)
 				
-				if (tab[ligne-1][colonne-1].equalsIgnoreCase(" ")) {
-		    	 tab[ligne-1][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  
-		    	 //mot=tab[7][colonne-1]; //MAJ du mot
-		    	 
-		    	 				 		
-		 		plateau.plateauconsole(tab); //aff tableau
-		 		
-		 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
-		 		
-		 		joueur.main.affichermain();  //aff main apres coup
-		    	 //j++;
-		    	 nbl++;  //compteur : pas plus de 7 lettres par tour
-				}
+				
+				if (plateau.tab[ligne-1][(colonne - 1)+cpt].equalsIgnoreCase(" ")) { //si la case est vide
+				
+					plateau.tab[ligne-1][(colonne-1)+cpt]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
+			    	 
+			    	 
+			    	mot+=(plateau.tab[ligne-1][(colonne-1)+cpt]); //MAJ du mot
+			    	 
+			    	 				 		
+			 		plateau.plateauconsole(plateau.tab); //aff tableau
+			 		
+			 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
+			 		
+			 		joueur.main.affichermain();  //aff main apres coup
+			    	 
+			    	n1++; 		    	 //compteur : pas plus de 7 lettres par tour
+			    	cpt++;	//decalage
+				}//fin if case vide
 				else{
 					System.out.println("Il y deja une lettre dans cette case");
 				}
+				
+				
 		    	 break;
-		     }//end case 1
-		     case 0: {
-			     nbl=7;
+		     }//fin case 1
+		     case 2:
+		    	 plateau.tab[ligne-1][(colonne-1)+cpt-1]=" ";
+		    	 plateau.plateauconsole(plateau.tab);
+		    	 break;
+		     case 0: { // si on ne veut plus placer de lettre ce tour ci
+			     n1=7;
 			     System.out.println("fin");
 			     
 			     break;
-		     }//end case 0
-		  }//end swithc
-		}//while
-	    } //end if
+		     }//fin case 0
+		     
+		  } //fin switch
 		  
-		else{
-			nbl=7;
-			System.out.println("fin");
-		}
-			
+		}// fin while
 		
+		System.out.println("le mot est : ");
 		
-	}//fin methode
+		System.out.println(mot);   //affichage du mot obtenu
+		
+		if (verif.dico(mot).equalsIgnoreCase("Mot correcte")) { plateau.plateauconsole(plateau.tab);}  //Vérifiaction du mot
+		else System.out.println( verif.dico(mot));
+		
+	}//fin méthode
 	
 	
 	
@@ -325,31 +359,48 @@ public class Menu {
 	public void ifplateauvidevertical(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][]){
 		
 		
-		int lettre, ligne, colonne; String mot;
-		System.out.println("Choisissez la lettre à placer (indiquer son numero) : ");
-		    
-		lettre=sc.nextInt();  //choix de la lettre
-		System.out.println("Premiere Lettre du jeu");
-		tab[7][7] = joueur.main.contenumain.get(lettre-1).nom; //placement de la lettre au centre
+		int lettre, ligne, colonne; String mot=null;
+		int i=0;
+		Dictionnaire dico=new Dictionnaire();
+		VerifMot verif=new VerifMot();
 		
-										
-		plateau.plateauconsole(tab); //affichage tableau après le coup
 		
-		joueur.main.contenumain.remove(lettre-1); //MAJ de la main
+	  	System.out.println("Choisissez la lettre à placer (indiquer son numero/1e lettre du mot) : ");	    
+		lettre=sc.nextInt();  //choix de la lettre à placer
 		
-						
-		joueur.main.affichermain(); //afichage de la nouvelle main ainsi obtenue
 		
-		 //mot=tab[7][7];  //MAJ du mot en cours (pour verif apres)
+		System.out.println("Choisissez la case où le placer (ligne)");						
+		ligne=sc.nextInt();  //choix de la ligne (uniquement ligne car mot horizontal)
 		
-		int n1 = 1,choix2 = 0;
+		if (plateau.tab[ligne-1][7].equalsIgnoreCase(" ")) { //si la case est vide
+		
+			plateau.tab[ligne-1][7]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la colonne car doit suivre la premiere lettre placée + horizontal
+	    	 
+	    	 
+	    	 if(mot==null){
+	    		 mot=(plateau.tab[ligne-1][7]);//MAJ du mot
+	    	 }
+	    	 else mot+=(plateau.tab[ligne-1][7]); //MAJ du mot
+	    	 
+	    	 				 		
+	 		plateau.plateauconsole(plateau.tab); //aff tableau
+	 		
+	 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
+	 		
+	 		joueur.main.affichermain();  //aff main apres coup
+    	 
+		} // fin si case vide
+		
+		
+		int n1 = 1, choix2=0, cpt=1;
+		
 		
 		while (n1<7) //sept lettre dans la main
 		{
-		  System.out.println("===Choix====\n 1_ placer une letrre\n 0_ fin");
+		  System.out.println("===Choix====\n 1_ placer une letrre\n 2_ retirer la derniere lettre placee\n 0_ fin");
 		  choix2 = sc.nextInt();  //nouveau choix de placer ou non
 		  
-
+		  
 		  switch (choix2) {
 		     case 1: {  //si on veut placer une lettre
 		     	
@@ -357,39 +408,59 @@ public class Menu {
 				lettre=sc.nextInt();  //choix de la lettre à placer
 				
 				
-				System.out.println("Choisissez la case où le placer (ligne)");						
-				ligne=sc.nextInt();  //choix de la colonne (uniquement colonne car mot horizontal)
 				
-				if (tab[ligne-1][7].equalsIgnoreCase(" ")) {
-		    	 tab[ligne-1][7]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
-		    	 //mot=tab[ligne-1][7]; //MAJ du mot
-		    	 
-		    	 				 		
-		 		plateau.plateauconsole(tab); //aff tableau
-		 		
-		 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
-		 		
-		 		joueur.main.affichermain();  //aff main apres coup
-		    	 //j++;
-		    	 n1++;  //compteur : pas plus de 7 lettres par tour
-				}
+				
+				if (plateau.tab[(ligne-1)+cpt][7].equalsIgnoreCase(" ")) { //si la case est vide
+				
+					plateau.tab[(ligne-1)+cpt][7]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
+			    	 
+			    	 
+			    	mot+=(plateau.tab[(ligne-1)+cpt][7]); //MAJ du mot
+			    	 
+			    	 				 		
+			 		plateau.plateauconsole(plateau.tab); //aff tableau
+			 		
+			 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
+			 		
+			 		joueur.main.affichermain();  //aff main apres coup
+			    	 
+			    	n1++; 		    	 //compteur : pas plus de 7 lettres par tour
+			    	cpt++;
+				}//fin si case vide 
 				else{
 					System.out.println("Il y deja une lettre dans cette case");
 				}
+				
+				
 		    	 break;
 		     }//fin case 1
+		     case 2:
+		    	 plateau.tab[(ligne-1)+cpt-1][7]=" ";
+		    	 plateau.plateauconsole(plateau.tab);
+		    	 break;
 		     case 0: { // si on ne veut plus placer de lettre ce tour ci
 			     n1=7;
 			     System.out.println("fin");
 			     
 			     break;
 		     }//fin case 0
+		     
 		  } //fin switch
+		  
 		}// fin while
 		
+		System.out.println("le mot est : ");
 		
+		System.out.println(mot);
 		
-	}//fin methode
+		if(tab[7][7].equalsIgnoreCase(" ")){			
+			annulerderniercoupvertical(plateau, tab, ligne, 7, cpt);			
+		}
+		
+		if (verif.dico(mot).equalsIgnoreCase("Mot correcte")) { plateau.plateauconsole(plateau.tab);}
+		else System.out.println( verif.dico(mot));
+		
+	}//fin méthode
 	
 	
 	
@@ -400,101 +471,105 @@ public class Menu {
 	
 	public void elseplateauvidevertical(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][]){
 		
-		int nbl = 0,choix2 = 0; int lettre,ligne,colonne;
-		String mot;
+		int lettre, ligne, colonne; String mot=null;
+		int i=0;
+		Dictionnaire dico=new Dictionnaire();
+		VerifMot verif=new VerifMot();
 		
 		
-		  System.out.println("===Choix====\n 1_ placer une letrre\n 0_ fin");
+	  	System.out.println("Choisissez la lettre à placer (indiquer son numero/1e lettre du mot) : ");	    
+		lettre=sc.nextInt();  //choix de la lettre à placer
+		
+		
+		System.out.println("Choisissez la case où le placer (ligne/colonne)");						
+		ligne=sc.nextInt();  //choix de la ligne
+		colonne=sc.nextInt();  //choix de la colonne (uniquement colonne car mot horizontal)
+		
+		if (plateau.tab[ligne-1][colonne - 1].equalsIgnoreCase(" ")) { //si la case est vide
+		
+			plateau.tab[ligne-1][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
+	    	 
+	    	 
+	    	 if(mot==null){
+	    		 mot=(plateau.tab[ligne-1][colonne-1]);//MAJ du mot
+	    	 }
+	    	 else mot+=(plateau.tab[ligne-1][colonne-1]); //MAJ du mot
+	    	 
+	    	 				 		
+	 		plateau.plateauconsole(plateau.tab); //aff tableau
+	 		
+	 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
+	 		
+	 		joueur.main.affichermain();  //aff main apres coup
+    	 
+		} // fin si case vide 
+		
+		
+		int n1 = 1, choix2=0, cpt=1;
+		
+		
+		while (n1<7) //sept lettre dans la main
+		{
+		  System.out.println("===Choix====\n 1_ placer une letrre\n 2_ retirer la derniere lettre placee\n 0_ fin");
 		  choix2 = sc.nextInt();  //nouveau choix de placer ou non
 		  
-		  if(choix2==1){ //si on veut placer une lettre
-			  
-			  /**
-			   * ici on gere la 1e lettre du mot à placer, on a le choix de la ligne et de la colonne
-			   */
-			  System.out.println("Choisissez la lettre à placer (indiquer son numero) : ");	    
-			  lettre=sc.nextInt();  //choix de la lettre à placer
-				
-				
-				System.out.println("Choisissez la case où le placer (ligne, colonne)");		///choix de la ligne et colonne				
-				ligne=sc.nextInt();
-				colonne=sc.nextInt();
-				
-				if (tab[ligne-1][colonne-1].equalsIgnoreCase(" ")) {
-				
-				tab[ligne-1][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  
-		    	 // mot=tab[ligne-1][colonne-1]; //MAJ du mot
-		    	 
-		    	 				 		
-		 		plateau.plateauconsole(tab); //aff tableau
-		 		
-		 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
-		 		
-		 		joueur.main.affichermain();  //aff main apres coup
-		    	 
-		    	 nbl++;
-				}
-				else{
-					System.out.println("Il y deja une lettre dans cette case");
-				}
-		    	 
-		    	 /**
-				   * à partir de la, on ne choisit plus que la ligne, car le mot est vertical, la colonne est fixée
-				   */
 		  
-		    	 while (nbl<7){//sept lettre dans la main
-		  System.out.println("===Choix====\n 1_ placer une letrre\n 0_ fin");
-		  int choix3 = sc.nextInt();  //nouveau choix de placer ou non
-		  
-			
-		  switch (choix3) {
-		     case 1: {
+		  switch (choix2) {
+		     case 1: {  //si on veut placer une lettre
 		     	
 		     	System.out.println("Choisissez la lettre à placer (indiquer son numero) : ");	    
 				lettre=sc.nextInt();  //choix de la lettre à placer
 				
 				
-				System.out.println("Choisissez la case où le placer (ligne)");						
-				ligne=sc.nextInt();  //choix de la colonne (uniquement colonne car mot horizontal)
 				
-				if (tab[ligne-1][colonne-1].equalsIgnoreCase(" ")) {
-		    	 tab[ligne-1][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  
-		    	// mot=tab[7][colonne-1]; //MAJ du mot
-		    	 
-		    	 				 		
-		 		plateau.plateauconsole(tab); //aff tableau
-		 		
-		 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
-		 		
-		 		joueur.main.affichermain();  //aff main apres coup
-		    	 //j++;
-		    	 nbl++;  //compteur : pas plus de 7 lettres par tour
+				
+				if (plateau.tab[(ligne-1)+cpt][(colonne - 1)].equalsIgnoreCase(" ")) { //si la case est vide
+				
+					plateau.tab[(ligne-1)+cpt][(colonne-1)]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
+			    	 
+			    	 
+			    	mot+=(plateau.tab[(ligne-1)+cpt][(colonne-1)]); //MAJ du mot
+			    	 
+			    	 				 		
+			 		plateau.plateauconsole(plateau.tab); //aff tableau
+			 		
+			 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
+			 		
+			 		joueur.main.affichermain();  //aff main apres coup
+			    	 
+			    	n1++; 		    	 //compteur : pas plus de 7 lettres par tour
+			    	cpt++;
 				}
 				else{
 					System.out.println("Il y deja une lettre dans cette case");
 				}
 				
+				
 		    	 break;
-		     }//end case 1
-		     case 0: {
-			     nbl=7;
+		     }//fin case 1
+		     case 2:
+		    	 plateau.tab[(ligne-1)+cpt-1][colonne-1]=" ";
+		    	 plateau.plateauconsole(plateau.tab);
+		    	 break;
+		     case 0: { // si on ne veut plus placer de lettre ce tour ci
+			     n1=7;
 			     System.out.println("fin");
 			     
 			     break;
-		     }//end case 0
-		  }//end swithc
-		}//while
-	    } //end if
+		     }//fin case 0
+		     
+		  } //fin switch
 		  
-		else{
-			nbl=7;
-			System.out.println("fin");
-		}
+		}// fin while
 		
+		System.out.println("le mot est : ");
 		
+		System.out.println(mot);
 		
+		if (verif.dico(mot).equalsIgnoreCase("Mot correcte")) { plateau.plateauconsole(plateau.tab);}
+		else System.out.println( verif.dico(mot));
 		
-	}
+	}//fin méthode
 	
 	
 	
@@ -505,47 +580,69 @@ public class Menu {
 	
 	public void changerlettres(Joueur joueur, Sac sac){
 		
-		Scanner sc= new Scanner(System.in);
+		
 		int choixlettre, nblettres;
 		int i=0;
 				
 		System.out.println("Combien de lettres souhaitez vous changer?\n");
-		nblettres=sc.nextInt();
+		nblettres=sc.nextInt(); //choix du nombre de lettre à changer
 		
 		while(1>nblettres || nblettres>7){    //on ne peut pas rentrer autre chose qu'un nombre entre 1 et 7
-			System.out.println("Combien de lettres souhaitez vous changer?\n");
+			System.out.println("Combien de lettres souhaitez vous changer?\n"); //on repete la question en cas d'entree incorrecte
 			nblettres=sc.nextInt();
 		}
 		
 			
-		while(i<nblettres){
+		while(i<nblettres){ //tant qu'on a pas changé suffsamment de lettre
 			
 		
-		System.out.println("Quelle lettre souhaitez vous changer? Indiquez son numero : \n");
-		
-		choixlettre=sc.nextInt();
-		
-		
-		sac.contenusac.add(joueur.main.contenumain.get(choixlettre-1));
-		
-		joueur.main.contenumain.remove(choixlettre-1);
-		
-		joueur.main.pioche(sac);
-		
-		joueur.main.affichermain();
-		
-		i++;
+			System.out.println("Quelle lettre souhaitez vous changer? Indiquez son numero : \n");
+			
+			choixlettre=sc.nextInt();  //choix de la lettre à changer
+			
+			
+			sac.contenusac.add(joueur.main.contenumain.get(choixlettre-1));  //on remmet la lettre dans le sac
+			
+			joueur.main.contenumain.remove(choixlettre-1); //on retire la lettre de la main
+			
+			joueur.main.pioche(sac);  //on pioche une nouvelle lettre
+			
+			joueur.main.affichermain(); //on affiche la main ainsi MAJ
+			
+			i++;
 		}
-		
-		
-		
-		
-		
-		
-		
-		
+				
 		
 	}
+	
+	
+	/**
+	 *  Méthode pour annuler un coup entier, si le mot est horizontal
+	 */
+	
+	public void annulerderniercouphorizontal(Plateau1 plateau, String tab[][], int ligne, int colonne, int cpt){
+		
+		while(cpt>0){		
+			plateau.tab[ligne][(colonne-1)+cpt-1]=" ";
+		cpt--;
+		}
+		plateau.plateauconsole(plateau.tab);
+		
+		}
+	
+	/**
+	 *  Méthode pour annuler un coup entier, si le mot est vertical
+	 */
+	
+	public void annulerderniercoupvertical(Plateau1 plateau, String tab[][], int ligne, int colonne, int cpt){
+		
+		while(cpt>0){		
+			plateau.tab[(ligne-1)+cpt-1][colonne]=" ";
+		cpt--;
+		}
+		plateau.plateauconsole(plateau.tab);
+		
+		}
 	
 	
 }
