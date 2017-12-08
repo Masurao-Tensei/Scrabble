@@ -8,6 +8,8 @@ public class Menu {
 	protected int possibilitechoix;
 	protected Joueur joueur;
 	protected Sac sac;
+	protected ArrayList<Lettre> Let_P;//contient les caractere possible et leurs valeurs points;
+	protected int[][] valD; //il va stocker l'indice des cases ou une lettre est placé ,utile pour lettrre*2, mot*2 etc..
 	
 	public int getChoixaction() {
 		return choixaction;
@@ -54,6 +56,7 @@ public class Menu {
 	
 	public void actionmenu(int choixaction, Joueur joueur, Sac sac, Plateau1 plateau){
 		
+		
 		switch(choixaction)
 	    {
 	        case 1 :
@@ -87,7 +90,10 @@ public class Menu {
 		int hv;
 		System.out.println("===Choix====\n 1_ Mot horizontal\n 2_ Mot Vertical\n 3_ Retour"); //choix de si le mot sera à la verticale ou horizontal
 		hv = sc.nextInt();
-		sc.nextLine();		
+		sc.nextLine();
+		valD = new int[15][15];//7 2
+		int x = 0,y =0;
+		Score scorejoueur=new Score();
 		
 		switch (hv) {
 			case 1:  //gestion des mots à l'horizontal
@@ -96,11 +102,11 @@ public class Menu {
 								
 				if (plateau.vide(plateau.tab) == true) //si le plateau est complétement vide
 				{
-					ifplateauvidehorizontal(joueur, sac, plateau, plateau.tab);					
+					ifplateauvidehorizontal(joueur, sac, plateau, plateau.tab,x, y, valD,scorejoueur);					
 				} 				
 				else 
 				{ //si le plateau n'est pas vide au départ				
-					elseplateauvidehorizontal(joueur, sac, plateau, plateau.tab);					
+					elseplateauvidehorizontal(joueur, sac, plateau, plateau.tab, x, y, valD,scorejoueur);					
 				} 			
 			
 			break;			
@@ -112,11 +118,11 @@ public class Menu {
 				
 				if (plateau.vide(plateau.tab) == true) //si le plateau est complétement vide
 				{	
-					ifplateauvidevertical(joueur, sac, plateau, plateau.tab);					
+					ifplateauvidevertical(joueur, sac, plateau, plateau.tab, x, y, valD,scorejoueur);					
 				} 				
 				else 
 				{ //si le plateau n'est pas vide au départ				
-					elseplateauvidevertical(joueur, sac, plateau, plateau.tab);						
+					elseplateauvidevertical(joueur, sac, plateau, plateau.tab, x, y, valD,scorejoueur);						
 				} 			
 			
 			break;			
@@ -135,7 +141,7 @@ public class Menu {
 	 */
 	
 	
-	public void ifplateauvidehorizontal(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][]){
+	public void ifplateauvidehorizontal(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][], int x, int y, int[][] valD,Score scorejoueur){
 		
 		
 		int lettre, ligne, colonne; String mot=null;
@@ -163,7 +169,7 @@ public class Menu {
 		if (plateau.tab[7][colonne - 1].equalsIgnoreCase(" ")) { //si la case est vide
 		
 			plateau.tab[7][colonne-1]=joueur.main.contenumain.get(lettre-1).nom;  ////7 pour la lignne car doit suivre la premiere lettre placée + horizontal
-    	 
+			valD[x][y]=7; valD[x][y+1]=colonne-1;//indice de la case joué 
     	 
 	    	 if(mot==null){
 	    		 mot=(plateau.tab[7][colonne-1]);//MAJ du mot
@@ -208,7 +214,7 @@ public class Menu {
 			    	 
 			    	 
 			    	mot+=(plateau.tab[7][(colonne-1)+cpt]); //MAJ du mot
-			    	 
+			    	valD[x][y]=7; valD[x][y+1]=colonne-1+cpt;//indice de la case joué 
 			    	 				 		
 			 		plateau.plateauconsole(plateau.tab); //aff tableau
 			 		
@@ -258,6 +264,10 @@ public class Menu {
 		
 		if (verif.dico(mot).equalsIgnoreCase("Mot correcte")) { //Vérification avec le dico
 			System.out.println("Le mot est correct\n");
+			System.out.println("valD : " + valD.toString());
+			joueur.score = joueur.score+scorejoueur.calculMot(sac,valD,mot);
+			System.out.println("test : " + scorejoueur.calculMot(sac,valD,mot));
+			System.out.println("score joueur : " + joueur.score);
 			plateau.plateauconsole(plateau.tab);}  
 		else {
 			annulerderniercouphorizontal(plateau, tab, 8, colonne, cpt);
@@ -273,7 +283,7 @@ public class Menu {
 	 */
 	
 	
-	public void elseplateauvidehorizontal(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][]){
+	public void elseplateauvidehorizontal(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][], int x, int y, int[][] valD,Score scorejoueur){
 		
 		int lettre, ligne, colonne; String mot=null;
 		int i=0;
@@ -315,6 +325,7 @@ public class Menu {
 	    	 }
 	    	 else mot+=(plateau.tab[ligne-1][colonne-1]); //MAJ du mot
 	    	 
+	    	 valD[x][y]=ligne-1; valD[x][y+1]=colonne-1;//indice de la case joué 
 	    	 				 		
 	 		plateau.plateauconsole(plateau.tab); //aff tableau
 	 		
@@ -326,6 +337,7 @@ public class Menu {
 		else{
 			//System.out.println("Il y deja une lettre dans cette case");
 			mot+=(plateau.tab[ligne-1][(colonne-1)]);
+			valD[x][y]=ligne-1; valD[x][y+1]=colonne-1;//indice de la case joué 
 			reutilise=true;
 		}
 		
@@ -357,7 +369,7 @@ public class Menu {
 			    	 
 			    	 
 			    	mot+=(plateau.tab[ligne-1][(colonne-1)+cpt]); //MAJ du mot
-			    	 
+			    	valD[x][y]=ligne-1; valD[x][y+1]=colonne-1+cpt;//indice de la case joué  
 			    	 				 		
 			 		plateau.plateauconsole(plateau.tab); //aff tableau
 			 		
@@ -371,6 +383,7 @@ public class Menu {
 				else{
 					//System.out.println("Il y deja une lettre dans cette case");
 					mot+=(plateau.tab[ligne-1][(colonne-1)+cpt]);
+					valD[x][y]=ligne-1; valD[x][y+1]=colonne-1+cpt;//indice de la case joué  
 					n1++;
 					cpt++;
 					reutilise=true;
@@ -407,6 +420,8 @@ public class Menu {
 		
 		if (verif.dico(mot).equalsIgnoreCase("Mot correcte")) { //Vérification avec le dico
 			System.out.println("Le mot est correct\n");
+			joueur.score = joueur.score+scorejoueur.calculMot(sac,valD,mot);
+			System.out.println("score joueur : " + joueur.score);
 			plateau.plateauconsole(plateau.tab);}  
 		else {
 			annulerderniercouphorizontal(plateau, tab, ligne, colonne, cpt);
@@ -422,7 +437,7 @@ public class Menu {
 	 */
 	
 	
-	public void ifplateauvidevertical(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][]){
+	public void ifplateauvidevertical(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][], int x, int y, int[][] valD,Score scorejoueur){
 		
 		
 		int lettre, ligne, colonne; String mot=null;
@@ -457,7 +472,8 @@ public class Menu {
 	    	 }
 	    	 else mot+=(plateau.tab[ligne-1][7]); //MAJ du mot
 	    	 
-	    	 				 		
+	    	 valD[x][y]=ligne-1; valD[x][y+1]=7;//indice de la case joué  
+	    	 
 	 		plateau.plateauconsole(plateau.tab); //aff tableau
 	 		
 	 		joueur.main.contenumain.remove(lettre-1);  //MAJ main
@@ -494,7 +510,8 @@ public class Menu {
 			    	 
 			    	 
 			    	mot+=(plateau.tab[(ligne-1)+cpt][7]); //MAJ du mot
-			    	 
+			    	
+			    	valD[x][y]=ligne-1; valD[x][y+1]=7;//indice de la case joué   
 			    	 				 		
 			 		plateau.plateauconsole(plateau.tab); //aff tableau
 			 		
@@ -541,6 +558,8 @@ public class Menu {
 		
 		if (verif.dico(mot).equalsIgnoreCase("Mot correcte")) { //Vérification avec le dico
 			System.out.println("Le mot est correct\n");
+			joueur.score = joueur.score+scorejoueur.calculMot(sac,valD,mot);
+			System.out.println("score joueur : " + joueur.score);
 			plateau.plateauconsole(plateau.tab);}  
 		else {
 			annulerderniercouphorizontal(plateau, tab, ligne, 8, cpt);
@@ -556,7 +575,7 @@ public class Menu {
 	 */
 		
 	
-	public void elseplateauvidevertical(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][]){
+	public void elseplateauvidevertical(Joueur joueur, Sac sac, Plateau1 plateau, String tab[][], int x, int y, int[][] valD,Score scorejoueur){
 		
 		int lettre, ligne, colonne; String mot=null;
 		int i=0;
@@ -599,6 +618,7 @@ public class Menu {
 	    	 }
 	    	 else mot+=(plateau.tab[ligne-1][colonne-1]); //MAJ du mot
 	    	 
+	    	 valD[x][y]=ligne-1; valD[x][y+1]=colonne-1;//indice de la case joué  
 	    	 				 		
 	 		plateau.plateauconsole(plateau.tab); //aff tableau
 	 		
@@ -611,7 +631,7 @@ public class Menu {
 			System.out.println("Il y deja une lettre dans cette case");
 			mot+=(plateau.tab[ligne-1][(colonne-1)]);
 			reutilise=true;
-			
+			valD[x][y]=ligne-1; valD[x][y+1]=colonne-1;//indice de la case joué  
 		}
 		
 		
@@ -639,7 +659,8 @@ public class Menu {
 			    	 
 			    	 
 			    	mot+=(plateau.tab[(ligne-1)+cpt][(colonne-1)]); //MAJ du mot
-			    	 
+			    	
+			    	valD[x][y]=ligne-1+cpt; valD[x][y+1]=colonne-1+cpt;//indice de la case joué  
 			    	 				 		
 			 		plateau.plateauconsole(plateau.tab); //aff tableau
 			 		
@@ -653,6 +674,7 @@ public class Menu {
 				else{
 					System.out.println("Il y deja une lettre dans cette case");
 					mot+=(plateau.tab[ligne-1+cpt][(colonne-1)]);
+					valD[x][y]=ligne-1+cpt; valD[x][y+1]=colonne-1+cpt;//indice de la case joué  
 					n1++;
 					cpt++;
 					reutilise=true;
@@ -686,6 +708,8 @@ public class Menu {
 		if(!reutilise){ annulerderniercoupvertical(plateau, plateau.tab, ligne, colonne, cpt);}
 		if (verif.dico(mot).equalsIgnoreCase("Mot correcte")) { //Vérification avec le dico
 			System.out.println("Le mot est correct\n");
+			joueur.score = joueur.score+scorejoueur.calculMot(sac,valD,mot);
+			System.out.println("score joueur 1 : " + joueur.score);
 			plateau.plateauconsole(plateau.tab);}  
 		else {
 			annulerderniercouphorizontal(plateau, tab, ligne, colonne, cpt);
