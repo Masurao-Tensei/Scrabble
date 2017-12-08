@@ -79,7 +79,7 @@ public class Menu extends JFrame implements ActionListener {
 			Plateau plateau = new Plateau();
 		}
 		if(arg0.getSource() == bouton2){
-			Plateau plateau2 = new Plateau();
+			Plateau plateau = new Plateau();
 		}
 		if(arg0.getSource() == bouton3){
 			Regles r = new Regles();

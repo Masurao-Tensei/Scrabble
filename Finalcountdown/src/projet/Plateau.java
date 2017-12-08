@@ -22,7 +22,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-public class Plateau extends JFrame{
+public class Plateau extends JFrame implements ActionListener{
+	
+		String tab[][]= { {" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+							{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "},
+						};
 	
 		Dimension base = new Dimension(120,30);
 		JButton PlaceMot = new JButton("Placer"); 
@@ -31,11 +48,15 @@ public class Plateau extends JFrame{
 		JButton AjoutJoueur = new JButton("Ajouter Joueur");
 		JButton Change = new JButton("Changer les lettres");
 		JButton Retour = new JButton("Retour"); 
-		JButton[] grilleBoutons = new JButton[7];
+		JButton[] PanBoutons = new JButton[7];
 		JLabel[] tabjoueurs = new JLabel[5]; 
-		JPanel grillePanel = new JPanel();
+		JPanel bPanel = new JPanel();
 		JPanel PanelInfos = new JPanel();
 		JPanel c =new Case();
+		MenuJeu Mj;
+		Joueur j;
+		Sac s;
+		int nbJoueurs=0;
 		
 	public Plateau(){
 
@@ -45,11 +66,11 @@ public class Plateau extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		 c.setBorder(new LineBorder(Color.BLACK,2));
-		 grillePanel.setLayout(new GridLayout(2,2));
+		 bPanel.setLayout(new GridLayout(2,2));
 		 PanelInfos.setBackground(new Color(0, 90, 15));
 		 
 		 getContentPane().add(c ,BorderLayout.CENTER);
-		 getContentPane().add(grillePanel, BorderLayout.SOUTH);
+		 getContentPane().add(bPanel, BorderLayout.SOUTH);
 		 getContentPane().add(PanelInfos, BorderLayout.EAST);
 		 
 		 ajoutPanel();
@@ -61,37 +82,40 @@ public class Plateau extends JFrame{
 
 	//////////
 	private void ajoutPanel(){
-	  JPanel Panmain = new JPanel();
-	  JPanel Panbouton = new JPanel();
+		JPanel Panmain = new JPanel();
+		JPanel Panbouton = new JPanel();
 	  
-	  PlaceMot.setPreferredSize(base);
-	  Panbouton.add(PlaceMot);
-	  Annuler.setPreferredSize(base);
-	  Panbouton.add(Annuler); 
-	  FinPlace.setPreferredSize(base);
-	  Panbouton.add(FinPlace); 
-	  AjoutJoueur.setPreferredSize(base);
-	  Panbouton.add(AjoutJoueur);
-	  Change.setPreferredSize(new Dimension(150,30));
-	  Panbouton.add(Change);
-	  Retour.setPreferredSize(base);
-	  Panbouton.add(Retour);
+		PlaceMot.setPreferredSize(base);
+		Panbouton.add(PlaceMot);
+		Annuler.setPreferredSize(base);
+		Panbouton.add(Annuler); 
+		FinPlace.setPreferredSize(base);
+		Panbouton.add(FinPlace); 
 	  
-	  Panmain.setBackground(new Color(0, 90, 15));
-	  Panbouton.setBackground(new Color(0, 90, 15));
+		AjoutJoueur.addActionListener(this);
+		AjoutJoueur.setPreferredSize(base);
+		Panbouton.add(AjoutJoueur);
+		Change.setPreferredSize(new Dimension(150,30));
+		Panbouton.add(Change);
+	  
+		Retour.addActionListener(this);
+		Retour.setPreferredSize(base);
+	  	Panbouton.add(Retour);
+	  
+	  	Panmain.setBackground(new Color(0, 90, 15));
+	  	Panbouton.setBackground(new Color(0, 90, 15));
 	 	
-	  for (int i = 0; i < 7; i++) 
+	  	for (int i = 0; i < 7; i++) 
 	    { 
 	    	JButton setmain = new JButton("Vide"); 
-
 	    	setmain.setPreferredSize(new Dimension(60,40));
-	    	grilleBoutons[i] = setmain;
+	    	PanBoutons[i] = setmain;
 	    	Panmain.add(setmain);
-
 	    	setmain.setEnabled(false); 
 	    }
-	  grillePanel.add(Panmain); 
-	  grillePanel.add(Panbouton);
+	  	
+		 bPanel.add(Panmain); 
+		 bPanel.add(Panbouton);
 	}
 	
 	//////////
@@ -101,9 +125,9 @@ public class Plateau extends JFrame{
 		JLabel haut = new JLabel("Le jeu du Scrabble ");
 		haut.setFont(new Font("Arial", Font.BOLD, 40));
 		haut.setForeground(Color.white);
-		haut.setBackground(new Color(0, 90, 15));
-		
+		haut.setBackground(new Color(0, 90, 15));	
 		haut.setLayout(new GridLayout(4,1));
+		
 		Paneljoueurs.add(haut);
 		
 		for (int i = 0; i < 2; i++) 
@@ -113,49 +137,108 @@ public class Plateau extends JFrame{
 			j.setFont(new Font("Arial", Font.BOLD, 16));
 			j.setForeground(Color.WHITE);
 			j.setPreferredSize( new Dimension(550,80));
+			
 			Paneljoueurs.add(j);
 	    	}
 	    
-	   JLabel Sac = new JLabel("Pour l'instant le sac est vide " /*+ main.getTailleSac()*/); 
-	   tabjoueurs[4] = Sac;
-	   Sac.setFont(new Font("Arial", Font.BOLD, 16));
-	   Sac.setForeground(Color.WHITE);
-	   Sac.setPreferredSize(new Dimension(550,80));
+		JLabel Sac = new JLabel("Pour l'instant le sac est vide " /*+ main.getTailleSac()*/); 
+		tabjoueurs[4] = Sac;
+		Sac.setFont(new Font("Arial", Font.BOLD, 16));
+		Sac.setForeground(Color.WHITE);
+		Sac.setPreferredSize(new Dimension(550,80));
 	   
-	   Paneljoueurs.add(Sac);	
+		Paneljoueurs.add(Sac);	
 	   
-	   Paneljoueurs.setLayout(new GridLayout(4,1));
-	   Paneljoueurs.setBackground(new Color(0, 90, 15));
-	  
-	   PanelInfos.add(Paneljoueurs);
+		Paneljoueurs.setLayout(new GridLayout(4,1));
+		Paneljoueurs.setBackground(new Color(0, 90, 15));
+		
+		PanelInfos.add(Paneljoueurs);
 	}
 	
 	/////////////
-
-	public void actionPerformed(ActionEvent arg0) 
+	@Override
+	public void actionPerformed(ActionEvent e) 
 	  { 
-	 
-	      //if (exe.equals("Ajouter Joueur"))
-	        { String nom = 
-	            JOptionPane.showInputDialog("Entrer votre nom"); 
-	         /* main.nouveauJoueur(nom);
-	          nbJoueur++;  
-	          if (nbJoueur >= 2)
-	          { b.setEnabled(false); } 
-	          actualiseJoueurs(); 
-	          return; */
-	        }
-	      if (arg0.getSource() == Retour)
-	      {
-	    	  Menu m2 = new Menu();
-	      }
-	     }
-	  
+		 Object eventSource = e.getSource(); 
+		 if (eventSource instanceof JButton)
+		    { 
+			  JButton b = (JButton) eventSource;
+		      String exe = b.getText();
+		      if (exe != null)
+		      {
+		    	  if (exe.equals("Ajouter Joueur"))
+		    	  { 
+		    		  String nom = 
+		    				JOptionPane.showInputDialog("Entrer votre nom"); 
+		    		  		j.setNom(nom);
+	          				nbJoueurs++;  
+	          				if (nbJoueurs >= 2)
+	          				{
+	          					b.setEnabled(false);
+	           				} 
+	          				actualiseJoueurs(); 
+	          				return; 
+		    	  }
+		    	  if(exe.equals("Changer les lettres"))
+		    	  {
+		    		  Mj.changerlettres(j,s);
+		    	  }
+		    	  if (exe.equals("Retour"))
+		    	  {
+		    		  Menu m2 = new Menu();
+		    	  }
+		      }
+		   }
+	  }
+	
+	///////////
+	private void actualiseJoueurs()
+	  { 
+	    int nbJoueurs = 2; 
+	    for (int i = 0; i < nbJoueurs; i++)
+	    { 
+	    	tabjoueurs[i].setText(j.getNom() + " score: " +  j.getScore()); 
+	    }
+	  }
+
+	
+	///////////
+	public void plateauconsole(String tab[][]){
+		
+		for(int i=0;i<15;i++)
+		{
+			for(int j=0;j<15;j++)
+			{
+				System.out.print(tab[i][j]+"  |");	
+			}
+			System.out.println("\n---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+");
+		}
+	}
+
+	///////////
+	boolean vide(String[][] t) 
+	{
+		int n = 0;
+		for (int i = 0; i < 15; i++)
+		{
+			for (int j = 0; j < 15; j++) 
+			{
+				if (t[i][j] != " ") 
+				{
+					n = 1;
+				}
+			}
+		}
+		if (n == 1)	return false;
+		else return true;
+	}
+	      
 	
 	///////////
 	public class Case extends JPanel{
 		
-		public Case(){
+		public Case()
+		{
 			setBackground(new Color(25, 90, 40));
 		}
 		
@@ -167,17 +250,19 @@ public class Plateau extends JFrame{
 			Graphics2D g2d = (Graphics2D)g;
 			List <Graphics> tab= new  ArrayList <Graphics>();
 			
-			for(int i=1; i<=15; i++){
-				for(int j=1; j<=15; j++){
+			for(int i=1; i<=15; i++)
+			{
+				for(int j=1; j<=15; j++)
+				{
 					int x=1+(36*j);
 					int y=1+(36*i);
 					g.drawRect(x, y, 36, 36);
-					tab.add(g);
-					
+					tab.add(g);	
 				}	
 			}
 			
 			///// rang1 //////
+			
 			GradientPaint gp = new  GradientPaint(50,50, Color.RED, 125, 75, Color.RED, true);
 			g2d.setPaint(gp);
 			g2d.fillRect(38, 38, 35, 35); //x, y, xplus, yplus
@@ -195,6 +280,7 @@ public class Plateau extends JFrame{
 			g2d.fillRect(542, 38, 35, 35);
 			
 			///// 2e rang //////
+			
 			GradientPaint gp11 = new  GradientPaint(0,0, Color.MAGENTA, 101, 10, Color.MAGENTA, true);
 			g2d.setPaint(gp11);
 			g2d.fillRect(74, 74, 35, 35); //x, y, xplus, yplus
@@ -209,6 +295,7 @@ public class Plateau extends JFrame{
 			g2d.fillRect(506, 74, 35, 35);
 			
 			///// 3e rang /////
+			
 			GradientPaint gp21 = new  GradientPaint(0,0, Color.MAGENTA, 101, 10, Color.MAGENTA, true);
 			g2d.setPaint(gp21);
 			g2d.fillRect(110, 110, 35, 35); //x, y, xplus, yplus
@@ -223,6 +310,7 @@ public class Plateau extends JFrame{
 			g2d.fillRect(470, 110, 35, 35);
 			
 			///// 4e rang /////
+			
 			GradientPaint gp31 = new  GradientPaint(0,0, Color.CYAN, 101, 10, Color.CYAN, true);
 			g2d.setPaint(gp31);
 			g2d.fillRect(38, 146, 35, 35); //x, y, xplus, yplus
@@ -240,6 +328,7 @@ public class Plateau extends JFrame{
 			g2d.fillRect(542, 146, 35, 35);
 			
 			///// 5e rang /////
+			
 			GradientPaint gp40 = new  GradientPaint(101,47, Color.MAGENTA, 0, 0, Color.MAGENTA, true);
 			g2d.setPaint(gp40);
 			g2d.fillRect(182, 182, 35, 35);
@@ -248,6 +337,7 @@ public class Plateau extends JFrame{
 			g2d.fillRect(398, 182, 35, 35);
 			
 			///// 6e rang /////
+			
 			GradientPaint gp51 = new  GradientPaint(0,0, Color.BLUE, 101, 10, Color.BLUE, true);
 			g2d.setPaint(gp51);
 			g2d.fillRect(74, 218, 35, 35); //x, y, xplus, yplus
@@ -262,6 +352,7 @@ public class Plateau extends JFrame{
 			g2d.fillRect(506, 218, 35, 35);
 			
 			///// 7e rang /////
+			
 			GradientPaint gp61 = new  GradientPaint(0,0, Color.CYAN, 101, 10, Color.CYAN, true);
 			g2d.setPaint(gp61);
 			g2d.fillRect(110, 254, 35, 35); //x, y, xplus, yplus
@@ -375,13 +466,10 @@ public class Plateau extends JFrame{
 			////// 15e rang /////
 			
 			g2d.setPaint(gp);
-			
 			g2d.fillRect(38, 542, 35, 35); 
-			
 			
 			g2d.setPaint(gp2);
 			g2d.fillRect(146, 542, 35, 35);
-			
 			
 			g2d.setPaint(gp3);
 			g2d.fillRect(290, 542, 35, 35);
@@ -391,7 +479,6 @@ public class Plateau extends JFrame{
 			
 			g2d.setPaint(gp5);
 			g2d.fillRect(542, 542, 35, 35);
-			
 			
 			
 			////////////// COULEUR /////////////
@@ -411,6 +498,7 @@ public class Plateau extends JFrame{
 			g.drawString("Mot x3", 39, 564);
 			g.drawString("Mot x3", 291, 564);
 			g.drawString("Mot x3", 543, 564);
+			
 			
 			////// case cyan //////
 			g.drawString("L  x2", 150, 60);
@@ -446,6 +534,7 @@ public class Plateau extends JFrame{
 			g.drawString("L  x2", 150, 564);
 			g.drawString("L  x2", 438, 564);
 			
+			
 			////// case magenta ///////
 			g.drawString("Mot x2", 75, 96);
 			g.drawString("Mot x2", 507, 96);
@@ -471,6 +560,7 @@ public class Plateau extends JFrame{
 			g.drawString("Mot x2", 75, 528);
 			g.drawString("Mot x2", 507, 528);
 			
+			
 			////// case bleu ///////
 			g.drawString("L  x3", 222, 96);
 			g.drawString("L  x3", 366, 96);
@@ -489,8 +579,7 @@ public class Plateau extends JFrame{
 			g.drawString("L  x3", 366, 528);
 		   
 		  }
-		
-	}
+		}
 	}
 
 	
