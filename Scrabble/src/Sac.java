@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
-public class Sac {
+public class Sac { 
 
-	protected boolean vide; //Je l'ai mis car permettra peut etre par le suite de l'utiliser pour l'arrête du jeu, si le sac est vide le jeu est fini
+	protected boolean vide; //Je l"ai mis car permettra peut etre par le suite de l"utiliser pour l"arrÃªte du jeu, si le sac est vide le jeu est fini
 	protected ArrayList<Lettre> contenusac; //Arraylist contenant les lettres dispo dans le sac
 	
 		
@@ -36,12 +37,9 @@ public class Sac {
 		
 	}
 	
-
-
-//Permet de remplir le sac avec le bon nombre de lettre
-	public void remplirsac(){
+	
 		
-		//Création des lettres et definition de leur valeur et de la quantité
+		//CrÃ©ation des lettres et definition de leur valeur et de la quantitÃ©
 		Lettre A= new Lettre("A",9,1);
 		Lettre B= new Lettre("B",2,3);
 		Lettre C= new Lettre("C",2,3);
@@ -69,12 +67,18 @@ public class Sac {
 		Lettre Y= new Lettre("Y",1,10);
 		Lettre Z= new Lettre("Z",1,10);
 		
-		Lettre Joker= new Lettre("_",2,0); //Voir comment le gérer
+		Lettre Joker= new Lettre("_",2,0); //Voir comment le gÃ©rer
+	
+	
+	
+
+//Permet de remplir le sac avec le bon nombre de lettre
+	public void remplirsac(){
 		
 			
 		int i;
 		
-		//on rempli le sac avec les différentes lettres
+		//on remplit le sac avec les diffÃ©rentes lettres
 		for(i=0;i<A.nombre;i++){
 			contenusac.add(A);			
 			}
@@ -186,7 +190,7 @@ public class Sac {
 		
 		
 		
-		Collections.shuffle(contenusac); //mélange les lettres dans le sac (utile par la suite pour la pioche)
+		Collections.shuffle(contenusac); //mÃ©lange les lettres dans le sac (utile par la suite pour la pioche)
 	}
 	/*Debut modification Faldji */
 	
