@@ -1,6 +1,7 @@
 package com.faldji;
 import java.util.*;
 
+
 public class Plateau2 {
 	
 	 private CaseAbdoulaye[][] CaseAbdoulaye = new CaseAbdoulaye[15][15];
@@ -8,7 +9,7 @@ public class Plateau2 {
 	  private List TousLesCases = new ArrayList(); 
 
 	  public Plateau2(Sac b)
-	  { // uses b to do layout -- mostly standard
+	  { 
 	    CaseAbdoulaye = b.getPlateau2();
 	    for (int i = 0; i < 15; i++)
 	    { for (int j = 0; j < 15; j++)
@@ -70,9 +71,35 @@ public class Plateau2 {
 	           CaseAbdoulaye[x][y0].estOcupee() ||
 	           CaseAbdoulaye[x][y1].estOcupee();
 	  }
+	  public boolean placementValide(Placement pl, int nb)
+	  { return pl.isPlacementValide(nb); } 
+
+	  public boolean placer(Placement pl, Plateau2 _ancien)
+	  { if (pl == null) { return false; }
+	    List litesplacements = pl.getPlaceLettre();
+	    List unis = new ArrayList(); 
+	    List seul = new ArrayList(); 
+
+	    for (int i = 0; i < litesplacements.size(); i++)
+	    { Place p = (Place) litesplacements.get(i); 
+	      Lettre l = p.getlettre(); 
+	      int x = p.getX(); 
+	      int y = p.getY(); 
+	      if (_ancien.AdjacentOcupee(x, y))
+	      { unis.add(p); } 
+	      else 
+	      { seul.add(p); } 
+	      placeLettre(l,x,y); 
+	    }
+
+	    if (unis.size() == 0)
+	    { System.out.println("Placement non autorisé: " + seul); 
+	      return false; 
+	    } 
+	    return true; 
+	  }
 
 	  
-
 	  public void placeLettre(Lettre l, int x, int y)
 	  { CaseAbdoulaye[x][y].setlettre(l); }
 

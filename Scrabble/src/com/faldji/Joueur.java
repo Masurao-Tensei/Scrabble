@@ -1,50 +1,51 @@
 package com.faldji;
 
+public abstract class Joueur
+{ private String nom;
+  private Grille g;
+  private int score = 0;
 
-public class Joueur {
-	protected String nom;
-	protected int score;
-	protected MainJoueur main;
-	protected Grille grille;
-	
-	public int getScore() {
-		return score;
-	}
-	public void setScore(int score) {
-		this.score = score;
-	}
-	public MainJoueur getMain() {
-		return main;
-	}
-	public void setMain(MainJoueur main) {
-		this.main = main;
-	}
-	public Joueur(String _nom) {
-		this.score = 0;
-		grille = new Grille();
-		this.nom =_nom;
-	}
-	public String getNom()
-	  { return nom; }
+  public Joueur(String _nom)
+  { nom = _nom;
+    g = new Grille(); 
+  }
 
-	  public Grille getGrille()
-	  { return grille; }
+  public String getNom()
+  { return nom; }
 
+  public Grille getGrille()
+  { return g; }
 
-	  public void ajoutScore(int s)
-	  { score += s; }
+  public int getScore()
+  { return score; }
 
-	 
-	
-	public Joueur(int score, MainJoueur main) {
-		super();
-		this.score = score;
-		this.main = main;
-	}
-	
-	
-	
-	
-	
-	
+  public void ajoutScore(int x)
+  { score += x; }
+
+  public abstract Placement placer(Plateau2 b); 
+
+  public String toString()
+  { return nom; } 
+
+ 
 }
+
+class H extends Joueur
+{ 
+  public H(String _nom)
+  { super(_nom); }
+
+  public Placement placer(Plateau2 b)
+  { return Placement.effectuePlacement(this,b); } 
+}
+
+class Ai extends Joueur
+{ 
+  public Ai(String _nom)
+  { super(_nom); }
+
+  public Placement placer(Plateau2 b) 
+  { return Placement.effectuePlacement(this,b); } 
+}
+
+

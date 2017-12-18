@@ -70,7 +70,7 @@ protected Lettre lettre = null;
 
 	  public String getText()
 	  { if (lettre != null)
-	    { return lettre + ""; }
+	    { return lettre.getNom()+""; }
 	    return CaseAbdoulayeSymbol();
 	  }
 

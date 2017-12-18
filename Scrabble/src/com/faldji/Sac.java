@@ -10,10 +10,10 @@ import java.util.Random;
 
 public class Sac {
 	private static List caseSpecial = new ArrayList(); 
-	  protected List alphabet = new ArrayList(); // of String
-	  protected Map LettreMap = new HashMap(); 
-	protected boolean vide; //Je l'ai mis car permettra peut etre par le suite de l'utiliser pour l'arrÃ¨te du jeu, si le sac est vide le jeu est fini
-	protected ArrayList<Lettre> contenusac; //Arraylist contenant les lettres dispo dans le sac
+	   List alphabet = new ArrayList(); 
+	   Map LettreMap = new HashMap(); 
+	protected boolean vide; 
+	protected ArrayList<Lettre> contenusac; 
 	
 		
 	public boolean isVide() {
@@ -142,7 +142,7 @@ public class Sac {
 //Permet de remplir le sac avec le bon nombre de lettre
 	public void remplirsac(){
 		
-		//Crï¿½ation des lettres et definition de leur valeur et de la quantitï¿½
+		//Création des lettres et definition de leur valeur et de la quantité
 		Lettre A= new Lettre("A",9,1);
 		Lettre B= new Lettre("B",2,3);
 		Lettre C= new Lettre("C",2,3);
@@ -170,15 +170,29 @@ public class Sac {
 		Lettre Y= new Lettre("Y",1,10);
 		Lettre Z= new Lettre("Z",1,10);
 		
-		Lettre Joker= new Lettre("_",2,0); //Voir comment le gï¿½rer
-		
+		Lettre Joker= new Lettre("_",2,0); 
+
+		alphabet.add("A");alphabet.add("B");alphabet.add("C");alphabet.add("D");
+		alphabet.add("E");alphabet.add("F");alphabet.add("G");alphabet.add("H");
+		alphabet.add("I");alphabet.add("J");alphabet.add("K");alphabet.add("L");
+		alphabet.add("M");alphabet.add("N");alphabet.add("O");alphabet.add("P");
+		alphabet.add("Q");alphabet.add("R");alphabet.add("S");alphabet.add("T");
+		alphabet.add("U");alphabet.add("V");alphabet.add("W");alphabet.add("X");
+		alphabet.add("Y");alphabet.add("Z");alphabet.add("_");
+	    LettreMap.put("A",A);LettreMap.put("B",B);LettreMap.put("C",C);LettreMap.put("D",D);
+	    LettreMap.put("E",E);LettreMap.put("F",F);LettreMap.put("G",G);LettreMap.put("H",H);
+	    LettreMap.put("I",I);LettreMap.put("J",J);LettreMap.put("K",K);LettreMap.put("L",L);
+	    LettreMap.put("M",M);LettreMap.put("N",N);LettreMap.put("O",O);LettreMap.put("P",P);
+	    LettreMap.put("Q",Q);LettreMap.put("R",R);LettreMap.put("S",S);LettreMap.put("T",T);
+	    LettreMap.put("U",U);LettreMap.put("V",V);LettreMap.put("W",W);LettreMap.put("X",X);
+	    LettreMap.put("Y",Y);LettreMap.put("Z",Z);LettreMap.put("_",Joker);
 			
 		int i;
 		
-		//on rempli le sac avec les diffï¿½rentes lettres
+		//on rempli le sac avec les différentes lettres
 		for(i=0;i<A.nombre;i++){
-			contenusac.add(A);
-			}
+			contenusac.add(A);	
+		}
 		
 		for(i=0;i<B.nombre;i++){			
 			contenusac.add(B);			
@@ -287,7 +301,7 @@ public class Sac {
 		
 		
 		
-		Collections.shuffle(contenusac); //mï¿½lange les lettres dans le sac (utile par la suite pour la pioche)
+		Collections.shuffle(contenusac); //mélange les lettres dans le sac (utile par la suite pour la pioche)
 	}
 	/*Debut modification Faldji */
 	
@@ -325,7 +339,7 @@ public class Sac {
 	    for (int i = 0; i < nb; i++)
 	    { int ind = rand.nextInt(n);
 	      Lettre l = (Lettre) contenusac.get(ind);
-	      liste.add(l);  // sort in decreasing score order
+	      liste.add(l);  
 	      contenusac.remove(ind);
 	      n--;
 	    }
