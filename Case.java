@@ -6,11 +6,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.List;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
 
 public class Case extends JPanel {
 
+	
 	public void paintComponent(Graphics g){
 		
 		Graphics2D g2d = (Graphics2D)g;
@@ -115,13 +115,13 @@ public class Case extends JPanel {
 		g2d.setPaint(gp61);
 		g2d.fillRect(191, 317, 44, 44); //x, y, xplus, yplus
 		GradientPaint gp62 = new  GradientPaint(101,47, Color.CYAN, 0, 0, Color.CYAN, true);
-		g2d.setPaint(gp52);
+		g2d.setPaint(gp62);
 		g2d.fillRect(371, 317, 44, 44);
 		GradientPaint gp63 = new  GradientPaint(0,0, Color.CYAN, 101, 10, Color.CYAN, true);
 		g2d.setPaint(gp63);
 		g2d.fillRect(461, 317, 44, 44);
 		GradientPaint gp64 = new  GradientPaint(101,47, Color.CYAN, 0, 0, Color.CYAN, true);
-		g2d.setPaint(gp54);
+		g2d.setPaint(gp64);
 		g2d.fillRect(641, 317, 44, 44);
 		
 		///// 8e rang /////
@@ -131,8 +131,8 @@ public class Case extends JPanel {
 		
 		g2d.setPaint(gp2);
 		g2d.fillRect(236, 362, 44, 44);
-		GradientPaint gpX = new  GradientPaint(0,0, Color.ORANGE, 101, 10, Color.ORANGE, true);
-		g2d.setPaint(gpX);
+		
+		g2d.setPaint(gp21);
 		g2d.fillRect(416, 362, 44, 44);
 		
 		g2d.setPaint(gp4);
@@ -336,26 +336,6 @@ public class Case extends JPanel {
 		
 		g.drawString("L  x3", 336, 658);
 		g.drawString("L  x3", 516, 658);
-		
-		
-		/*//15 premières cases
-	    g.drawRect(10, 10, 50, 50);
-	    g.drawRect(60, 10, 50, 50);
-	    g.drawRect(110, 10, 50, 50);
-	    g.drawRect(160, 10, 50, 50);
-	    g.drawRect(210, 10, 50, 50);
-	    g.drawRect(260, 10, 50, 50);
-	    g.drawRect(310, 10, 50, 50);
-	    g.drawRect(360, 10, 50, 50);
-	    g.drawRect(410, 10, 50, 50);
-	    g.drawRect(460, 10, 50, 50);
-	    g.drawRect(510, 10, 50, 50);
-	    g.drawRect(560, 10, 50, 50);
-	    g.drawRect(610, 10, 50, 50);
-	    g.drawRect(660, 10, 50, 50);
-	    g.drawRect(710, 10, 50, 50);
-	    */
-
 	   
 	  } 
 }
